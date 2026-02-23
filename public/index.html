@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo Deployment - EC2</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Demo Deployment</h1>
+      <p class="tagline">From code commit to running EC2 in minutes</p>
+    </header>
+    <main>
+      <section class="card">
+        <h2>How it works</h2>
+        <ol>
+          <li>Push code to your repository</li>
+          <li>AWS CodePipeline detects the change</li>
+          <li>CodeBuild builds the application</li>
+          <li>CloudFormation provisions or updates the EC2 instance</li>
+          <li>CodeDeploy deploys the app to EC2</li>
+        </ol>
+      </section>
+      <section class="card status">
+        <h2>Service status</h2>
+        <p id="health-status">Checking...</p>
+        <p id="health-time"></p>
+      </section>
+    </main>
+    <footer>
+      <p>Powered by AWS CodePipeline · CodeBuild · CloudFormation · CodeDeploy</p>
+    </footer>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

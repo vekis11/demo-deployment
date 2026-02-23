@@ -1,0 +1,42 @@
+version: 0.0
+os: linux
+
+files:
+  - source: /
+    destination: /home/ec2-user/demo-deployment
+
+permissions:
+  - object: /home/ec2-user/demo-deployment
+    owner: ec2-user
+    group: ec2-user
+    mode: 755
+    type:
+      - directory
+  - object: /home/ec2-user/demo-deployment
+    owner: ec2-user
+    group: ec2-user
+    mode: 644
+    type:
+      - file
+
+hooks:
+  ApplicationStop:
+    - location: scripts/application_stop.sh
+      timeout: 30
+      runas: ec2-user
+  BeforeInstall:
+    - location: scripts/before_install.sh
+      timeout: 60
+      runas: ec2-user
+  AfterInstall:
+    - location: scripts/after_install.sh
+      timeout: 300
+      runas: ec2-user
+  ApplicationStart:
+    - location: scripts/application_start.sh
+      timeout: 60
+      runas: ec2-user
+  ValidateService:
+    - location: scripts/validate_service.sh
+      timeout: 30
+      runas: ec2-user
