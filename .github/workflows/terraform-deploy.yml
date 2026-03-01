@@ -39,8 +39,9 @@ jobs:
       - name: Terraform Init
         working-directory: terraform
         run: |
+          BUCKET=$(echo -n "${{ secrets.TF_STATE_BUCKET }}" | tr -d '[:space:]')
           {
-            echo "bucket = \"${{ secrets.TF_STATE_BUCKET }}\""
+            echo "bucket = \"$BUCKET\""
             echo "key = \"wellspan-demo/terraform.tfstate\""
             echo "region = \"${{ env.TF_VAR_aws_region }}\""
           } > backend.hcl
