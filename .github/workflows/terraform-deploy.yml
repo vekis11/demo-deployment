@@ -99,4 +99,4 @@ jobs:
         working-directory: terraform
         if: success() && (github.event_name != 'workflow_dispatch' || github.event.inputs.action != 'destroy')
         run: terraform output -json
-        if: success()
+      
