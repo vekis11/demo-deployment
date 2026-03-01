@@ -28,10 +28,15 @@ data "aws_vpc" "default" {
   default = true
 }
 
+# Subnet in us-east-1a (t3.micro not available in us-east-1e)
 data "aws_subnets" "default" {
   filter {
     name   = "vpc-id"
     values = [data.aws_vpc.default.id]
+  }
+  filter {
+    name   = "availability-zone"
+    values = ["us-east-1a"]
   }
 }
 
