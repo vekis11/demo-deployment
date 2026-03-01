@@ -1,7 +1,22 @@
-node_modules/
+# Terraform
+.terraform/
+backend.hcl
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+.terraform.lock.hcl
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Environment
 .env
+.env.*
 *.log
 .DS_Store
 .idea/
 .vscode/
-*.zip

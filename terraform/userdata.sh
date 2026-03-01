@@ -1,9 +1,17 @@
+#!/bin/bash
+# Bootstrap script: Install Apache and serve "Welcome to WellSpan."
+set -e
+
+dnf update -y
+dnf install -y httpd
+
+cat > /var/www/html/index.html << 'EOF'
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cordea-Weespan Mentorship Program</title>
+  <title>WellSpan</title>
   <style>
     body {
       font-family: system-ui, -apple-system, sans-serif;
@@ -22,6 +30,10 @@
   </style>
 </head>
 <body>
-  <h1>Welcome to Cordea-Weespan Mentorship Program</h1>
+  <h1>Welcome to WellSpan.</h1>
 </body>
 </html>
+EOF
+
+systemctl start httpd
+systemctl enable httpd

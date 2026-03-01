@@ -1,0 +1,73 @@
+name: Terraform Deploy to AWS EC2
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+env:
+  TF_VAR_aws_region: us-east-1
+  TF_VAR_project_name: wellspan-demo
+  TF_VAR_instance_type: t3.micro
+
+jobs:
+  terraform:
+    name: Terraform Plan & Apply
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write  # Required for OIDC
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          # Option A: OIDC (recommended) - configure IAM role ARN in GitHub
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.TF_VAR_aws_region }}
+          # Option B: Static credentials - use instead of role-to-assume
+          # aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          # aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.0
+          terraform_wrapper: false
+
+      - name: Terraform Init
+        working-directory: terraform
+        run: |
+          {
+            echo "bucket = \"${{ secrets.TF_STATE_BUCKET }}\""
+            echo "key = \"wellspan-demo/terraform.tfstate\""
+            echo "region = \"${{ env.TF_VAR_aws_region }}\""
+          } > backend.hcl
+          terraform init -backend-config=backend.hcl -input=false
+
+      - name: Terraform Format
+        working-directory: terraform
+        run: terraform fmt -check -recursive
+        continue-on-error: true
+
+      - name: Terraform Validate
+        working-directory: terraform
+        run: terraform validate
+
+      - name: Terraform Plan
+        working-directory: terraform
+        run: |
+          terraform plan -var="key_name=${{ secrets.AWS_KEY_PAIR_NAME }}" -input=false -out=tfplan
+
+      - name: Terraform Apply
+        working-directory: terraform
+        run: |
+          terraform apply -auto-approve -input=false tfplan
+
+      - name: Output Web URL
+        working-directory: terraform
+        run: terraform output -json
+        if: success()
