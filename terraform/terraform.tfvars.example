@@ -1,4 +1,4 @@
 aws_region   = "us-east-1"
 project_name = "wellspan-demo"
 instance_type = "t3.micro"
-key_name     = "your-key-pair-name"  # Create this in EC2 > Key Pairs
+key_name     = "wellspan-demo-key.pem"  # Create this in EC2 > Key Pairs
