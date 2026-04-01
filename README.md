@@ -30,7 +30,7 @@ GitHub (push) → GitHub Actions → Terraform Apply → AWS EC2
 #### A. Create an EC2 Key Pair
 
 1. Go to **EC2** → **Key Pairs** → **Create key pair**
-2. Name: e.g. `wellspan-demo-key`
+2. Name: e.g. `demo-key`
 3. Type: RSA, Format: `.pem` (or `.ppk` for PuTTY)
 4. Download and store the private key securely
 5. Note the **key pair name** for later
@@ -38,7 +38,7 @@ GitHub (push) → GitHub Actions → Terraform Apply → AWS EC2
 #### B. Create S3 Bucket for Terraform State
 
 1. Go to **S3** → **Create bucket**
-2. Bucket name: e.g. `your-org-terraform-state-wellspan`
+2. Bucket name: e.g. `your-org-terraform-state`
 3. Region: same as your deployment (e.g. `us-east-1`)
 4. Block public access: keep enabled
 5. Versioning: **Enable** (recommended for state recovery)
@@ -56,7 +56,7 @@ GitHub (push) → GitHub Actions → Terraform Apply → AWS EC2
 **Option 1: IAM User (simpler)**
 
 1. Go to **IAM** → **Users** → **Create user**
-2. Name: e.g. `github-actions-wellspan`
+2. Name: e.g. `github-actions`
 3. Attach policy (or create custom policy):
 
 ```json
@@ -150,7 +150,7 @@ Remove or comment out the `role-to-assume` line.
 
    ```hcl
    bucket         = "your-terraform-state-bucket"
-   key            = "wellspan-demo/terraform.tfstate"
+   key            = "demo/terraform.tfstate"
    region         = "us-east-1"
    dynamodb_table = "terraform-state-lock"  # optional
    ```
@@ -159,7 +159,7 @@ Remove or comment out the `role-to-assume` line.
 
    ```hcl
    aws_region   = "us-east-1"
-   project_name = "wellspan-demo"
+   project_name = "demo"
    instance_type = "t3.micro"
    key_name     = "your-key-pair-name"
    ```
