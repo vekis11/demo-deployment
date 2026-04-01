@@ -1,4 +1,4 @@
-# WellSpan Demo – Terraform + CI/CD to AWS EC2
+Demo – Terraform + CI/CD to AWS EC2
 
 This demo uses **Terraform** (Infrastructure as Code) and a **GitHub Actions CI/CD pipeline** to deploy an Amazon Linux 2023 EC2 instance that runs Apache and serves a simple "Welcome to WellSpan." page.
 
